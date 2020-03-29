@@ -1,2 +1,2 @@
 print('hello')
-print('123sddd')
+print('123')
