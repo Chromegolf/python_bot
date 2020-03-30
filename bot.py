@@ -19,11 +19,11 @@ from main import parse
 import logging
 
 def start (update, context):
-    result = str(parse())
+    result = parse()
 
-    if len(result) > 4096:
-        for x in range (0, len(result), 4096):
-            update.message.reply_text(result[x:x+4096])
+    if len(result) >= 50:
+        for x in range (0, len(result), 10):
+            update.message.reply_text(str(result[x:x+5]))
     else:
         update.message.reply_text(result)
 
