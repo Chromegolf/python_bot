@@ -1,16 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
 
+from config import URL
+from config import HOST
+
 #const
-url = 'https://www.avito.ru/pik-arenda/moskva/kvartiry/sdam' 
+
 user_headers = {
     'User-agent': '(Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
     'Accept': '*/*'
 }
-host = 'https://www.avito.ru'
 
 def get_html(url, params=None):
-    req = requests.get(url, headers=user_headers, params=params)
+    req = requests.get(URL, headers=user_headers, params=params)
     return req
 
 def get_content(html):
@@ -31,18 +33,19 @@ def get_content(html):
             'address': metro_station,       
             'price': item.find('span', class_='price').get('content') + ' руб',
             'commision': item.find('span', class_='about__commission').get_text(strip=True),
-            'link': host + item.find('a', class_='item-description-title-link').get('href'),
+            'link': HOST + item.find('a', class_='item-description-title-link').get('href'),
             'date': item.find('div', class_='data').find_next('div', class_='js-item-date c-2').get_text(strip=True)
         })
     print (apartment)
     return apartment
 
 def parse():
-    html = get_html(url)
+    html = get_html(URL)
     if html.status_code == 200:
         apartment = get_content(html.text)
     else:
         print('Error on get page')
+    return apartment
 
 parse()
 
