@@ -3,20 +3,14 @@ from bs4 import BeautifulSoup
 
 from config import URL
 from config import HOST
-
-#const
-
-user_headers = {
-    'User-agent': '(Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
-    'Accept': '*/*'
-}
+from config import USER_HEADERS
 
 def get_html(url, params=None):
     params = {
         'pmin': 20000,
         'pmax': 22000
     }
-    req = requests.get(URL, headers=user_headers, params=params)
+    req = requests.get(URL, headers=USER_HEADERS, params=params)
     return req
 
 def get_total_pages(html):
