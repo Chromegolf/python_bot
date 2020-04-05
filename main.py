@@ -66,4 +66,4 @@ def parse():
         print('Error on get page')
     return apartments
 
-parse()
+#parse()
