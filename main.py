@@ -31,7 +31,7 @@ def get_content(html):
     for item in items:
         metro_station = item.find('i', class_='i-metro i-metro-msk-2')
         address = item.find('p', class_='address').get_text(strip=True)
-        
+
         if metro_station:
             metro_station = metro_station.get_text() + address
         else:
@@ -45,7 +45,7 @@ def get_content(html):
             'Опубликовано': item.find('div', class_='data').find_next('div', class_='js-item-date c-2').get_text("|", strip=True),
             'link': HOST + item.find('a', class_='item-description-title-link').get('href'),
         })  
-    return (apartment)
+    return ('\n'.join(map(str, apartment)))
     #return apartment
 
 def parse():
@@ -67,11 +67,3 @@ def parse():
     return apartments
 
 parse()
-
-
-#item__line
-#item_table-wrapper 
-#description item_table-description
-#title item-description-title
-#item-description-title-link
-#name

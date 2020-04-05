@@ -21,9 +21,10 @@ import logging
 
 def start (update, context):
     result = parse()
+    to_string = ''.join(result)
     
-    split_regex = re.compile(r'[{|}]')
-    sentences = filter(lambda t: t, [t.strip() for t in split_regex.split(result)])
+    split_regex = re.compile(r'[{|}}]')
+    sentences = filter(lambda t: t, [t.strip() for t in split_regex.split(to_string)])
     for s in sentences:
         update.message.reply_text(f'{s}')
 
