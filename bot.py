@@ -4,6 +4,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 import requests
 from bs4 import BeautifulSoup
+import re
 
 from config import TG_TOKEN
 from config import TG_API_URL 
@@ -20,12 +21,11 @@ import logging
 
 def start (update, context):
     result = parse()
-
-    if len(result) >= 50:
-        for x in range (0, len(result), 10):
-            update.message.reply_text(f'{str(result[x:x+5])}')
-    else:
-        update.message.reply_text(result)
+    
+    split_regex = re.compile(r'[{|}]')
+    sentences = filter(lambda t: t, [t.strip() for t in split_regex.split(result)])
+    for s in sentences:
+        update.message.reply_text(f'{s}')
 
 
 def main():
