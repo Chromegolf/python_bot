@@ -12,9 +12,19 @@ user_headers = {
 }
 
 def get_html(url, params=None):
+    params = {
+        'pmin': 20000,
+        'pmax': 22000
+    }
     req = requests.get(URL, headers=user_headers, params=params)
     return req
 
+def get_total_pages(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    pages = soup.find('div', class_='pagination-pages').find_all('a', class_='pagination-page')[-1].get('href')
+    total_pages = pages.split('=')[1]
+    return int(total_pages)
+    
 def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
     items = soup.find_all('div', class_='item item_table clearfix js-catalog-item-enum')
@@ -41,12 +51,20 @@ def get_content(html):
 def parse():
     html = get_html(URL)
     if html.status_code == 200:
-        apartment = get_content(html.text)
+        apartments = []
+        #apartments = get_content(html.text)
+        pages_count = get_total_pages(html.text)
+        for page in range(1, pages_count + 1):
+            print(f'Parse process, page is {page} of {pages_count}...')
+            html = get_html(URL, params={'page': page})
+            apartments.extend(get_content(html.text))
+        #print(apartments)
     else:
         print('Error on get page')
-    return apartment
+    return apartments
 
 parse()
+
 
 #item__line
 #item_table-wrapper 
