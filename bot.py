@@ -14,15 +14,15 @@ from main import parse
 
 def start (update, context):
     result = parse()
-    to_string = ''.join(result)
-    to_string = to_string.replace("'", '')
-    
+    to_string = ''.join(result).replace("'", '')
+    update.message.reply_text(to_string)
+
     try:
-        split_regex = re.compile(r'[{|}}]')
-        sentences = filter(lambda t: t, [t.strip() for t in split_regex.split(to_string)])
+        pattern = re.compile(r'[{|}}]')
+        sentences = filter(lambda t: t, [t.strip() for t in pattern.split(to_string)])
         for s in sentences:
             update.message.reply_text(f'{s}')
-    except expression as identifier:
+    except:
         update.message.reply_text(result)
 
 def main():
@@ -34,6 +34,7 @@ def main():
         bot = bot,
         use_context=True
     )
+    #job = updater.job_queue.run_repeating(start, 60, 0)
 
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))

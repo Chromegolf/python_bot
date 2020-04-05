@@ -7,7 +7,7 @@ from config import USER_HEADERS
 
 def get_html(url, params=None):
     params = {
-        'pmin': 20000,
+        'pmin': 23000,
         'pmax': 25000
     }
     req = requests.get(URL, headers=USER_HEADERS, params=params)
