@@ -23,12 +23,10 @@ def start (update, context):
 
     if len(result) >= 50:
         for x in range (0, len(result), 10):
-            update.message.reply_text(str(result[x:x+5]))
+            update.message.reply_text(f'{str(result[x:x+5])}')
     else:
         update.message.reply_text(result)
 
-def echo (update, context):
-    update.message.reply_text('update.message.text')
 
 def main():
     bot = Bot(
@@ -43,7 +41,6 @@ def main():
 
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text, echo))
 
     updater.start_polling()
     updater.idle()

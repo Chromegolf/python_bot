@@ -34,9 +34,8 @@ def get_content(html):
             'price': item.find('span', class_='price').get('content') + ' руб',
             'commision': item.find('span', class_='about__commission').get_text(strip=True),
             'link': HOST + item.find('a', class_='item-description-title-link').get('href'),
-            'date': item.find('div', class_='data').find_next('div', class_='js-item-date c-2').get_text(strip=True)
-        })
-    print (apartment)
+            'date': item.find('div', class_='data').find_next('div', class_='js-item-date c-2').get_text("|", strip=True),
+        })   
     return apartment
 
 def parse():
