@@ -12,18 +12,22 @@ from config import TG_API_URL
 from config import URL 
 from main import parse
 
-def start (update, context):
+def alarm(context):
     result = parse()
     to_string = ''.join(result).replace("'", '')
-    update.message.reply_text(to_string)
-
     try:
         pattern = re.compile(r'[{|}}]')
         sentences = filter(lambda t: t, [t.strip() for t in pattern.split(to_string)])
         for s in sentences:
-            update.message.reply_text(f'{s}')
+            #update.message.reply_text(f'{s}')
+            context.bot.send_message(chat_id=context.job.context, text=f'{s}')
     except:
-        update.message.reply_text(result)
+        #update.message.reply_text(result)
+        context.bot.send_message(chat_id=context.job.context, text=result)
+
+def start (update, context):
+    chat_id = update.message.chat_id
+    context.job_queue.run_repeating(alarm, 10, 0, context=chat_id)  
 
 def main():
     bot = Bot(
@@ -34,7 +38,6 @@ def main():
         bot = bot,
         use_context=True
     )
-    #job = updater.job_queue.run_repeating(start, 60, 0)
 
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
