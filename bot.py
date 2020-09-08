@@ -8,34 +8,38 @@ import requests
 import logging
 
 from config import TG_TOKEN
-from config import TG_API_URL 
-from config import URL 
+from config import TG_API_URL
+from config import URL
 from main import parse
+
 
 def alarm(context):
     result = parse()
     to_string = ''.join(result).replace("'", '')
     try:
         pattern = re.compile(r'[{|}}]')
-        sentences = filter(lambda t: t, [t.strip() for t in pattern.split(to_string)])
+        sentences = filter(lambda t: t, [t.strip()
+                                         for t in pattern.split(to_string)])
         for s in sentences:
-            #update.message.reply_text(f'{s}')
+            # update.message.reply_text(f'{s}')
             context.bot.send_message(chat_id=context.job.context, text=f'{s}')
     except:
-        #update.message.reply_text(result)
+        # update.message.reply_text(result)
         context.bot.send_message(chat_id=context.job.context, text=result)
 
-def start (update, context):
+
+def start(update, context):
     chat_id = update.message.chat_id
-    context.job_queue.run_repeating(alarm, 10, 0, context=chat_id)  
+    context.job_queue.run_repeating(alarm, 3600, 0, context=chat_id)
+
 
 def main():
     bot = Bot(
-        token = TG_TOKEN,
+        token=TG_TOKEN,
         base_url=TG_API_URL,
     )
     updater = Updater(
-        bot = bot,
+        bot=bot,
         use_context=True
     )
 
@@ -45,8 +49,8 @@ def main():
     updater.start_polling()
     updater.idle()
 
-if __name__ == '__main__': 
-    logging.info('msg')
-    main()    
-    
 
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info('msg')
+    main()
