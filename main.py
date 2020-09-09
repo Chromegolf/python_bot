@@ -66,6 +66,7 @@ def get_content(html):
                     'span', class_='item-address-georeferences-item__after').get_text(strip=True)
 
                 metro_info = 'м.' + metro_station + '-' + metro_distance
+                metro_info = metro_info.replace(u'\xa0', ' ')
 
             else:
                 metro_info = 'Рядом метро нет'
@@ -102,6 +103,3 @@ def parse():
     else:
         print('Error on get page')
     return apartments
-
-
-parse()
